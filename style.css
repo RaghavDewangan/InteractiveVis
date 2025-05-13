@@ -1,4 +1,4 @@
-body {
+/*body {
   font-family: Arial, sans-serif;
   margin: 20px;
 }
@@ -39,7 +39,67 @@ svg {
   border-radius: 4px;
   pointer-events: none;
   font-size: 14px;
+}*/
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
 }
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 20px;
+}
+
+.controls label,
+.controls select,
+.controls input {
+  font-size: 14px;
+  margin: 0;
+  padding: 2px 6px;
+}
+
+.controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+select, input {
+  padding: 3px 5px;
+  font-size: 14px;
+}
+
+svg {
+  border: 1px solid #ccc;
+  width: 100%;
+  height: auto;
+}
+
+.chart-container {
+  width: 100%;
+  height: auto;
+}
+
+.tooltip {
+  position: absolute;
+  background: lightgray;
+  padding: 4px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 13px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
 
 
   
