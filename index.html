@@ -7,11 +7,14 @@
     <link rel="stylesheet" type="text/css" href="../styles.css">
 </head>
 <body>
-    <h1>Plot</h1>
+    <h1>Interactive Temperature Plot</h1>
     <div id="chart"></div>
+    <div id="stats" style="margin-top: 15px;"></div>
+    <div id="hover-info" style="margin-top: 15px;"></div>
+    <button id="zoom-btn" style="margin-top: 15px;">Zoom to Selection</button>
     <script type="module">
-    import { renderTemperaturePlot } from './main.js';
-    renderTemperaturePlot('Mouse_Data_Student_Copy.xlsx - Fem Temp.csv');
+        import { renderTemperaturePlot } from './main.js';
+        renderTemperaturePlot('Mouse_Data_Student_Copy.xlsx - Fem Temp.csv');
     </script>
 </body>
 </html>
