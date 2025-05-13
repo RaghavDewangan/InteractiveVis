@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Health Visualization</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <h1>Mouse Activity & Temperature Visualization</h1>
+
+  <div class="controls">
+    <label><input type="checkbox" id="toggleMale" checked> Show Males</label>
+    <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
+    <select id="dataType">
+      <option value="temp">Temperature</option>
+      <option value="act">Activity</option>
+    </select>
+    <select id="tickMode">
+      <option value="default">Default Ticks</option>
+      <option value="lightDark">Light/Dark Cycles</option>
+    </select>
+    <label for="highlightMouse">Highlight Mouse:</label>
+    <input type="text" id="highlightMouse" placeholder="e.g. f5, m2">
+  </div>
+
+  <svg id="chart" width="1200" height="500"></svg>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

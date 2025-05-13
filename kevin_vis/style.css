@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .controls {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  svg {
+    border: 1px solid #ccc;
+  }
+  
