@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+select, input {
+  margin: 0 10px;
+  padding: 5px;
+}
+
+svg {
+  border: 1px solid #ccc;
+  width: 100%;
+  height: auto;
+}
+
+.chart-container {
+  width: 100%;
+  height: auto;
+}
+
+.tooltip {
+  position: absolute;
+  background: lightgray;
+  padding: 4px;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 14px;
+}
+
+
+  
+  
