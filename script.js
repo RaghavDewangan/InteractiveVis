@@ -131,6 +131,7 @@ function updateChart() {
     .attr("fill", "none")
     .attr("stroke", d => d.gender === "male" ? "#1f77b4" : "#e377c2")
     .attr("stroke-width", 2.5)
+    .attr("opacity", 0.7)
     .attr("d", d => line(d.values));
 
   // Add tooltip
@@ -142,14 +143,14 @@ function updateChart() {
   // Line hover effects
   mouseLine
     .on("mouseover", function (event, d) {
-      d3.select(this).attr("stroke-width", 4).attr("stroke", "orange");
+      d3.select(this).attr("stroke-width", 4).attr("opacity", 1)
       tooltip.style("opacity", 1)
         .html(`${d.gender === "male" ? "Male" : "Female"} Average ${currentType === "temp" ? "Temperature" : "Activity"}`);
     })
     .on("mouseout", function (event, d) {
       d3.select(this)
         .attr("stroke-width", 2.5)
-        .attr("stroke", d.gender === "male" ? "#1f77b4" : "#e377c2");
+        .attr("stroke", d.gender === "male" ? "#1f77b4" : "#e377c2").attr("opacity", 0.7);
       tooltip.style("opacity", 0);
     });
 
