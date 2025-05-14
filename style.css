@@ -1,62 +1,21 @@
-/*body {
-  font-family: Arial, sans-serif;
+body {
+  font-family: 'Arial', sans-serif;
   margin: 20px;
+  background-color: #f7f7f7;
 }
 
 h1 {
-  text-align: center;
-}
-
-.controls {
   text-align: center;
   margin-bottom: 20px;
-}
-
-label {
-  margin-right: 10px;
-}
-
-select, input {
-  margin: 0 10px;
-  padding: 5px;
-}
-
-svg {
-  border: 1px solid #ccc;
-  width: 100%;
-  height: auto;
-}
-
-.chart-container {
-  width: 100%;
-  height: auto;
-}
-
-.tooltip {
-  position: absolute;
-  background: lightgray;
-  padding: 4px;
-  border-radius: 4px;
-  pointer-events: none;
-  font-size: 14px;
-}*/
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  color: #2c3e50;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: 3px;
+  gap: 20px;
   margin-bottom: 20px;
 }
 
@@ -65,42 +24,137 @@ h1 {
 .controls input {
   font-size: 14px;
   margin: 0;
-  padding: 2px 6px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .controls label {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 select, input {
-  padding: 3px 5px;
+  background-color: white;
   font-size: 14px;
+  border-radius: 8px;
+  width: 150px;
+  border: 1px solid #ccc;
 }
 
-svg {
-  border: 1px solid #ccc;
+select:focus, input:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+input[type="text"] {
+  width: 200px;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #3498db;
+}
+
+.controls select {
+  width: auto;
+  padding: 6px;
+}
+
+.controls label, .controls select, .controls input {
+  margin: 5px;
+}
+
+/* Style for Highlight Mouse and below to be in the second row */
+.controls-row-2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
-  height: auto;
 }
 
 .chart-container {
   width: 100%;
-  height: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+svg {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  height: 500px;
+  background-color: #fff;
+  margin-top: 20px;
 }
 
 .tooltip {
   position: absolute;
-  background: lightgray;
-  padding: 4px 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 6px 10px;
   border-radius: 4px;
   pointer-events: none;
-  font-size: 13px;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
 }
 
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
+}
 
+/* checkbox styling */
+input[type="checkbox"] {
+  width: 24px; /* Set a fixed width */
+  height: 24px; /* Set a fixed height to make it square */
+  border-radius: 4px; /* Slightly rounded edges */
+  background-color: white;
+  border: 2px solid #ccc;
+  appearance: none; /* Remove default styles */
+  position: relative;
+  transition: all 0.2s ease;
+}
 
-  
-  
+input[type="checkbox"]:checked {
+  background-color: #3498db; /* Blue background when checked */
+  border-color: #3498db; /* Blue border when checked */
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✔"; /* Add check mark when checked */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  border-color: #2980b9; /* Highlight on focus */
+}
+
+.controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.controls input[type="checkbox"] {
+  margin: 0;
+}
