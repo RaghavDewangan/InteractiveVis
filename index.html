@@ -26,13 +26,13 @@
   </div>
 
   <div class="controls-row-2">
-    <div class="control-group">
+    <!-- <div class="control-group">
       <label for="tickMode">Tick Mode:</label>
       <select id="tickMode">
         <option value="default">Default Ticks</option>
         <option value="lightDark">Light/Dark Cycles</option>
       </select>
-    </div>
+    </div> -->
     <div class="control-group">
       <label for="timeMode">Time Mode:</label>
       <select id="timeMode">
@@ -60,10 +60,11 @@ Our final plot is essentially a line plot with lines for the average data for fe
     <li>Line plot: line plots are best suited for time series data as we have here.</li>
     <li>Color encoding: Pink for female, blue for male: adheres to the historical color connotation of sex.</li>
     <li>Averaged across all male and female mice respectively, essentially collapsing the dataframe into one column for each gender and activity vs. gender to later respect the data to ink ratio when plotting.</li>
-    <li>X-Axis Selection: Days or hours on x-axis (depending on selection) to respect how the data was collected (12 hr dark/light cycles) and make it more interpretable for readers.</li>
+    <li>X-Axis Selection: Days or seconds on x-axis (depending on selection) to respect how the data was collected (12 hr dark/light cycles) and make it more interpretable for readers.</li>
     <li>Male/Female selection: enable the viewer to select either male or female individually to explore or both to visualize.</li>
     <li>Temperature/Activity drop down: filter between temperature and activity level (can plot one or the other, not both at once because that wouldn’t make sense)</li>
     <li>Zoom function: to allow for closer exploration.</li>
+    <li>Dark Cycle Shading : Grayed out opaque intervals for the Dark Cycles to denote 12 hour dark cycles and allow for effective data analysis</li>
   </ul>
   </div>
 

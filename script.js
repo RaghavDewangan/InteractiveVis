@@ -10,6 +10,7 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 let currentType = "temp";
 let dataReady = {};
+let zoomState = d3.zoomIdentity;
 
 // Load and process the data
 Promise.all([
@@ -59,13 +60,47 @@ function calculateAverage(data) {
   }];
 }
 
+function drawDarkCycles(timeMode, timeStart, timeEnd, zoomX) {
+  const darkCycles = g.append("g")
+    .attr("class", "dark-cycles")
+    .attr("clip-path", "url(#clip)");
+
+  if (timeMode === "day") {
+    const darkCycleDuration = 720; // 12 hours in minutes
+    const cycleDuration = 1440; // 24 hours in minutes
+    
+    // Calculate how many full cycles we have
+    const numCycles = Math.ceil(timeEnd / cycleDuration);
+    
+    for (let i = 0; i < numCycles; i++) {
+      const cycleStart = i * cycleDuration;
+      const darkStart = cycleStart;
+      const darkEnd = darkStart + darkCycleDuration;
+      
+      // Only draw if within our time range
+      if (darkEnd > timeStart && darkStart < timeEnd) {
+        const drawStart = Math.max(darkStart, timeStart);
+        const drawEnd = Math.min(darkEnd, timeEnd);
+        
+        darkCycles.append("rect")
+          .attr("x", zoomX(drawStart))
+          .attr("y", 0)
+          .attr("width", zoomX(drawEnd) - zoomX(drawStart))
+          .attr("height", height)
+          .attr("fill", "#f0f0f0")
+          .attr("opacity", 0.4);
+      }
+    }
+  }
+  return darkCycles;
+}
+
 function updateChart() {
   g.selectAll("*").remove();
   svg.select("defs")?.remove();
 
   const maleChecked = document.getElementById("toggleMale").checked;
   const femaleChecked = document.getElementById("toggleFemale").checked;
-  const tickMode = document.getElementById("tickMode").value;
   const timeRange = document.getElementById("timeRange").value.trim();
   const timeMode = document.getElementById("timeMode").value;
 
@@ -123,7 +158,11 @@ function updateChart() {
     .y(d => y(d.value))
     .defined(d => d.value !== null && !isNaN(d.value));
 
-  // Draw lines
+    // Draw dark cycles using the current zoom state
+    const zoomX = zoomState.rescaleX(x) || x;
+    drawDarkCycles(timeMode, timeStart, timeEnd, zoomX);
+
+    // Draw lines
   const mouseLine = lineGroup.selectAll(".mouse-line")
     .data(filteredData)
     .join("path")
@@ -159,24 +198,17 @@ function updateChart() {
       .style("top", (event.pageY - 20) + "px");
   });
 
+  // Format X-axis ticks
+  const formatTicks = d => {
+    if (timeMode === "day") return `Day ${Math.floor(d / 1440) + 1}`;
+    return `${d}`;
+  };
+
+  // Add X-axis
   const bottomXAxis = g.append("g")
-  .attr("transform", `translate(0,${height})`)
-  .attr("class", "x-axis-bottom");
-  
-if (timeMode === "day") {
-  // Custom tick values: start at 720, increment by 1440 (day)
-  bottomXAxis.call(d3.axisBottom(x)
-    .tickValues(d3.range(720, x.domain()[1] + 720, 1440))
-    .tickFormat(d => `Day ${Math.floor(d / 1440) + 1}`));
-} else {
-  // Standard ticks for non-day mode
-  bottomXAxis.call(d3.axisBottom(x)
-    .ticks(14)
-    .tickFormat(d => {
-      if (tickMode === "lightDark") return `${d % 24}:00 ${d % 24 < 12 ? "L" : "D"}`;
-      return `${d}`;
-    }));
-}
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(zoomX).ticks(14).tickFormat(formatTicks))
+    .attr("class", "x-axis-bottom");
 
   // Add axis labels
   g.append("text")
@@ -227,12 +259,29 @@ if (timeMode === "day") {
       .text("Female Avg");
   }
 
+  // Add dark cycle legend if in day mode
+  if (timeMode === "day") {
+    legend.append("rect")
+      .attr("x", 0)
+      .attr("y", 40)
+      .attr("width", 20)
+      .attr("height", 10)
+      .attr("fill", "#f0f0f0")
+      .attr("opacity", 0.5);
+    
+    legend.append("text")
+      .attr("x", 25)
+      .attr("y", 48)
+      .text("Dark Cycle");
+  }
+
   // Zoom functionality
   const zoom = d3.zoom()
     .scaleExtent([1, 10])
     .translateExtent([[0, 0], [width, height]])
     .extent([[0, 0], [width, height]])
     .on("zoom", function (event) {
+      zoomState = event.transform;
       const newX = event.transform.rescaleX(x);
 
       // Clamp the zoomed domain
@@ -246,19 +295,14 @@ if (timeMode === "day") {
         ])
         .range(newX.range());
 
-        if (timeMode === "day") {
-          bottomXAxis.call(d3.axisBottom(clampedX)
-            .tickValues(d3.range(720, clampedX.domain()[1] + 720, 1440).filter(d => d >= clampedX.domain()[0] && d <= clampedX.domain()[1]))
-            .tickFormat(d => `Day ${Math.floor(d / 1440) + 1}`));
-        } else {
-          bottomXAxis.call(d3.axisBottom(clampedX)
-            .ticks(14)
-            .tickFormat(d => {
-              if (tickMode === "lightDark") return `${d % 24}:00 ${d % 24 < 12 ? "L" : "D"}`;
-              return `${d}`;
-            }));
-        }
+      // Update axes
+      bottomXAxis.call(d3.axisBottom(clampedX).ticks(14).tickFormat(formatTicks));
 
+      // Update dark cycles
+      g.selectAll(".dark-cycles").remove();
+      drawDarkCycles(timeMode, timeStart, timeEnd, clampedX);
+
+      // Update lines
       mouseLine.attr("d", d => {
         const zoomedLine = d3.line()
           .x(p => clampedX(p.time))
@@ -278,6 +322,5 @@ document.getElementById("dataType").addEventListener("change", function () {
   currentType = this.value;
   updateChart();
 });
-document.getElementById("tickMode").addEventListener("change", updateChart);
 document.getElementById("timeRange").addEventListener("input", updateChart);
 document.getElementById("timeMode").addEventListener("change", updateChart);
