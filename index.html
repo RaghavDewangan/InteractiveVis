@@ -1,45 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Mouse Health Visualization</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Mouse Activity & Temperature Visualization</h1>
-
-  <div class="controls">
-    <label><input type="checkbox" id="toggleMale" checked> Show Males</label>
-    <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
-    <select id="dataType">
-      <option value="temp">Temperature</option>
-      <option value="act">Activity</option>
-    </select>
-    <select id="tickMode">
-      <option value="default">Default Ticks</option>
-      <option value="lightDark">Light/Dark Cycles</option>
-    </select>
-    <label for="highlightMouse">Highlight Mouse:</label>
-    <input type="text" id="highlightMouse" placeholder="e.g. f5, m2">
-    
-    <select id="timeMode">
-      <option value="day">Day</option>
-      <option value="sec">Seconds</option>
-    </select>
-    
-    <label for="timeRange">Time Range(seconds):</label>
-    <input type="text" id="timeRange" placeholder="e.g. 0-1440">
-  </div>
-
-  <div class="chart-container">
-    <svg id="chart" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid meet"></svg>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,30 +7,43 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Mouse Activity & Temperature Visualization</h1>
+  <header>
+    <h1>Mouse Activity & Temperature Visualization</h1>
+  </header>
 
   <div class="controls">
-    <label><input type="checkbox" id="toggleMale" checked> Show Males</label>
-    <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
-    <select id="dataType">
-      <option value="temp">Temperature</option>
-      <option value="act">Activity</option>
-    </select>
-    <select id="tickMode">
-      <option value="default">Default Ticks</option>
-      <option value="lightDark">Light/Dark Cycles</option>
-    </select>
-    <label for="highlightMouse">Highlight Mouse:</label>
-    <input type="text" id="highlightMouse" placeholder="e.g. f5, m2">
-    
-    <!-- New option to view by day or by seconds -->
-    <select id="timeMode">
-      <option value="day">Day</option>
-      <option value="sec">Seconds</option>
-    </select>
-    
-    <label for="timeRange">Time Range (Seconds):</label>
-    <input type="text" id="timeRange" placeholder="e.g. 0-1440">
+    <div class="control-group">
+      <label><input type="checkbox" id="toggleMale" checked> Show Males</label>
+      <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
+    </div>
+    <div class="control-group">
+      <label for="dataType">Data Type:</label>
+      <select id="dataType">
+        <option value="temp">Temperature</option>
+        <option value="act">Activity</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="controls-row-2">
+    <div class="control-group">
+      <label for="tickMode">Tick Mode:</label>
+      <select id="tickMode">
+        <option value="default">Default Ticks</option>
+        <option value="lightDark">Light/Dark Cycles</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="timeMode">Time Mode:</label>
+      <select id="timeMode">
+        <option value="day">Day</option>
+        <option value="sec">Seconds</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="timeRange">Time Range (Seconds):</label>
+      <input type="text" id="timeRange" placeholder="e.g. 0-1440">
+    </div>
   </div>
 
   <div class="chart-container">
@@ -82,111 +53,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Mouse Health Visualization</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Mouse Activity & Temperature Visualization</h1>
-
-  <div class="controls">
-    <label><input type="checkbox" id="toggleMale" checked> Show Males</label>
-    <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
-    <select id="dataType">
-      <option value="temp">Temperature</option>
-      <option value="act">Activity</option>
-    </select>
-    <select id="tickMode">
-      <option value="default">Default Ticks</option>
-      <option value="lightDark">Light/Dark Cycles</option>
-    </select>
-    <label for="highlightMouse">Highlight Mouse:</label>
-    <input type="text" id="highlightMouse" placeholder="e.g. f5, m2">
-  </div>
-
-  <svg id="chart" width="1200" height="500"></svg>
-
-  <script src="script.js"></script>
-</body>
-</html>-->
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Mouse Health Visualization</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Mouse Activity & Temperature Visualization</h1>
-
-  <div class="controls">
-    <label><input type="checkbox" id="toggleMale"> Show Males</label>
-    <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
-    <select id="dataType">
-      <option value="temp">Temperature</option>
-      <option value="act">Activity</option>
-    </select>
-    <select id="tickMode">
-      <option value="default">Default Ticks</option>
-      <option value="lightDark">Light/Dark Cycles</option>
-    </select>
-    <label for="highlightMouse">Highlight Mouse:</label>
-    <input type="text" id="highlightMouse" placeholder="e.g. f5, m2">
-  </div>
-
-  <svg id="chart" width="1200" height="500"></svg>
-
-  <script src="script.js"></script>
-</body>
-</html>-->
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Mouse Health Visualization</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Mouse Activity & Temperature Visualization</h1>
-
-  <div class="controls">
-    <label><input type="checkbox" id="toggleMale" checked> Show Males</label>
-    <label><input type="checkbox" id="toggleFemale" checked> Show Females</label>
-    <select id="dataType">
-      <option value="temp">Temperature</option>
-      <option value="act">Activity</option>
-    </select>
-    <select id="tickMode">
-      <option value="default">Default Ticks</option>
-      <option value="lightDark">Light/Dark Cycles</option>
-    </select>
-    <label for="highlightMouse">Highlight Mouse:</label>
-    <input type="text" id="highlightMouse" placeholder="e.g. f5, m2">
-    <label for="timeRange">Time Range (start-end):</label>
-    <input type="text" id="timeRange" placeholder="e.g. 0-1440">
-  </div>
-
-  <div class="chart-container">
-    <svg id="chart" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid meet"></svg>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>-->
-
-
-
-
-
-
-
-
