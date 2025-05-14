@@ -159,18 +159,24 @@ function updateChart() {
       .style("top", (event.pageY - 20) + "px");
   });
 
-  // Format X-axis ticks
-  const formatTicks = d => {
-    if (timeMode === "day") return `Day ${Math.floor(d / 1440) + 1}`;
-    if (tickMode === "lightDark") return `${d % 24}:00 ${d % 24 < 12 ? "L" : "D"}`;
-    return `${d}`;
-  };
-
-  // Add X-axis
   const bottomXAxis = g.append("g")
-    .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(x).ticks(14).tickFormat(formatTicks))
-    .attr("class", "x-axis-bottom");
+  .attr("transform", `translate(0,${height})`)
+  .attr("class", "x-axis-bottom");
+  
+if (timeMode === "day") {
+  // Custom tick values: start at 720, increment by 1440 (day)
+  bottomXAxis.call(d3.axisBottom(x)
+    .tickValues(d3.range(720, x.domain()[1] + 720, 1440))
+    .tickFormat(d => `Day ${Math.floor(d / 1440) + 1}`));
+} else {
+  // Standard ticks for non-day mode
+  bottomXAxis.call(d3.axisBottom(x)
+    .ticks(14)
+    .tickFormat(d => {
+      if (tickMode === "lightDark") return `${d % 24}:00 ${d % 24 < 12 ? "L" : "D"}`;
+      return `${d}`;
+    }));
+}
 
   // Add axis labels
   g.append("text")
@@ -240,7 +246,18 @@ function updateChart() {
         ])
         .range(newX.range());
 
-      bottomXAxis.call(d3.axisBottom(clampedX).ticks(14).tickFormat(formatTicks));
+        if (timeMode === "day") {
+          bottomXAxis.call(d3.axisBottom(clampedX)
+            .tickValues(d3.range(720, clampedX.domain()[1] + 720, 1440).filter(d => d >= clampedX.domain()[0] && d <= clampedX.domain()[1]))
+            .tickFormat(d => `Day ${Math.floor(d / 1440) + 1}`));
+        } else {
+          bottomXAxis.call(d3.axisBottom(clampedX)
+            .ticks(14)
+            .tickFormat(d => {
+              if (tickMode === "lightDark") return `${d % 24}:00 ${d % 24 < 12 ? "L" : "D"}`;
+              return `${d}`;
+            }));
+        }
 
       mouseLine.attr("d", d => {
         const zoomedLine = d3.line()
