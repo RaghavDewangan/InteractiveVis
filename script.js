@@ -177,7 +177,7 @@ function updateChart() {
     .attr("x", width / 2)
     .attr("y", height + 40)
     .attr("text-anchor", "middle")
-    .text(timeMode === "day" ? "Time (Days)" : "Time (Hours)");
+    .text(timeMode === "day" ? "Time (Days)" : "Time (Seconds)");
 
   g.append("text")
     .attr("transform", "rotate(-90)")
