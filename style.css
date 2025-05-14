@@ -152,3 +152,44 @@ svg {
   font-size: 1rem;
 }
 
+input[type="checkbox"] {
+  width: 24px; /* Set a fixed width */
+  height: 24px; /* Set a fixed height to make it square */
+  border-radius: 4px; /* Slightly rounded edges */
+  background-color: white;
+  border: 2px solid #ccc;
+  appearance: none; /* Remove default styles */
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #3498db; /* Blue background when checked */
+  border-color: #3498db; /* Blue border when checked */
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✔"; /* Add check mark when checked */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  border-color: #2980b9; /* Highlight on focus */
+}
+
+.controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.controls input[type="checkbox"] {
+  margin: 0;
+}
