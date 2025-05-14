@@ -70,7 +70,6 @@ input[type="checkbox"]:checked {
   margin: 5px;
 }
 
-/* Style for Highlight Mouse and below to be in the second row */
 .controls-row-2 {
   display: flex;
   flex-wrap: wrap;
@@ -116,45 +115,40 @@ svg {
   border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
 }
 
-/* checkbox styling */
-input[type="checkbox"] {
-  width: 24px; /* Set a fixed width */
-  height: 24px; /* Set a fixed height to make it square */
-  border-radius: 4px; /* Slightly rounded edges */
-  background-color: white;
-  border: 2px solid #ccc;
-  appearance: none; /* Remove default styles */
-  position: relative;
-  transition: all 0.2s ease;
+.description-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-input[type="checkbox"]:checked {
-  background-color: #3498db; /* Blue background when checked */
-  border-color: #3498db; /* Blue border when checked */
+.description-container h2 {
+  font-size: 1.5rem;
+  color: #34495e;
+  margin-bottom: 10px;
 }
 
-input[type="checkbox"]:checked::after {
-  content: "✔"; /* Add check mark when checked */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 14px;
+.description-container p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
 }
 
-input[type="checkbox"]:focus {
-  outline: none;
-  border-color: #2980b9; /* Highlight on focus */
+.description-container ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-top: 10px;
+  color: #555;
 }
 
-.controls label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
+.description-container ul li {
+  margin-bottom: 5px;
+  font-size: 1rem;
 }
 
-.controls input[type="checkbox"] {
-  margin: 0;
-}

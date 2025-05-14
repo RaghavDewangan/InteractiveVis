@@ -50,6 +50,32 @@
     <svg id="chart" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid meet"></svg>
   </div>
 
+  <!-- Description Section -->
+  <div class="description-container">
+    <h2 id="description-title">Design Rationale</h2>
+    <p id="description-text">We started with exploratory data analysis for the checkpoint, plotting different segments of data and different datasets. Then we met and decided that we would want to pursue the male vs. female angle of the data. The dataset is pretty straightforward with male activity, female activity, male temperature, and female temperature, so most of our interactions would revolve around these distinctions (i.e. clicking male/female on/off and selecting activity or temperature).
+Our final plot is essentially a line plot with lines for the average data for female mice and male mice respectively. Other alternatives we considered were plotting all individual mice as their own line, allowing selection or filtering of different mice. We also considered a plot that exclusively plotted aggregated female activity and temperature and had preselected brushing that showed day/night time and estrus/non-estrus. We combined elements from both in our final encodings and interactions:
+</p>
+    <ul>
+    <li>Line plot: line plots are best suited for time series data as we have here.</li>
+    <li>Color encoding: Pink for female, blue for male: adheres to the historical color connotation of sex.</li>
+    <li>Averaged across all male and female mice respectively, essentially collapsing the dataframe into one column for each gender and activity vs. gender to later respect the data to ink ratio when plotting.</li>
+    <li>X-Axis Selection: Days or hours on x-axis (depending on selection) to respect how the data was collected (12 hr dark/light cycles) and make it more interpretable for readers.</li>
+    <li>Male/Female selection: enable the viewer to select either male or female individually to explore or both to visualize.</li>
+    <li>Temperature/Activity drop down: filter between temperature and activity level (can plot one or the other, not both at once because that wouldn’t make sense)</li>
+    <li>Zoom function: to allow for closer exploration.</li>
+  </ul>
+  </div>
+
+  <div class="description-container">
+    <h2 id="description-title">Team Member Work Split</h2>
+    <p id="description-text">For the checkpoint, we all read up on the dataset and came up with 1-2 static visuals (1-2 hr/person). 
+We met up on zoom and discussed which elements we liked and brainstormed interactive elements to possibly implement looking forward (1 hr/person).
+Later, we asynchronously worked on 3 interactive visuals via different branches on a collaborative repo (3-5 hr/person).
+Then, we met up and decided what elements we wanted to include in our final visual. At this stage, we all worked on different parts of the project around the same table: style, writeup, merging interactive elements into one visual. For merging the elements, this was the component that took the most time, so we rotated git pushing and pulling, debugging and discussing with each other to complete the project (4 hr/person).
+</p>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
