@@ -4,7 +4,7 @@ async function loadAverageData(path) {
     const data = await d3.csv(path, row => {
         const parsed = {};
         for (const key in row) {
-            parsed[key] = +row[key]; // Convert strings to numbers
+            parsed[key] = +row[key];
         }
         return parsed;
     });
@@ -59,6 +59,7 @@ export async function renderTemperaturePlot(path) {
     const yAxis = d3.axisLeft(yScale);
 
     svg.append("g")
+        .attr("class", "x-axis")
         .attr("transform", `translate(0,${usableArea.bottom})`)
         .call(xAxis);
 
@@ -72,7 +73,6 @@ export async function renderTemperaturePlot(path) {
         .attr('transform', `translate(${usableArea.left}, 0)`);
 
     gridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width));
-
     gridlines.selectAll('line')
         .attr('stroke', '#ccc')
         .attr('stroke-width', 1)
@@ -94,6 +94,7 @@ export async function renderTemperaturePlot(path) {
 
     svg.append("path")
         .datum(raw)
+        .attr("class", "temp-line")
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 2)
@@ -108,29 +109,70 @@ export async function renderTemperaturePlot(path) {
         .call(brush);
 
     const preselectedSegments = [
-        { start: 2160, end: 2880 , label: "Light (Estrus)" },
-        { start: 2880, end: 3600 , label: "Dark (Estrus)" },
-        { start: 2160, end: 3600 , label: "Full-Day (Estrus)" },
-        { start: 5040, end: 5760 , label: "Light (Non-Estrus)" },
-        { start: 5760, end: 6480 , label: "Dark (Non-Estrus)" },
-        { start: 5040, end: 6480 , label: "Full-Day (Non-Estrus)" },
+        { start: 2160, end: 2880, label: "Light (Estrus)" },
+        { start: 2880, end: 3600, label: "Dark (Estrus)" },
+        { start: 2160, end: 3600, label: "Full-Day (Estrus)" },
+        { start: 5040, end: 5760, label: "Light (Non-Estrus)" },
+        { start: 5760, end: 6480, label: "Dark (Non-Estrus)" },
+        { start: 5040, end: 6480, label: "Full-Day (Non-Estrus)" },
     ];
 
     const dropdown = d3.select("#controls")
         .append("select")
         .attr("id", "preset-brush")
-        .on("change", function() {
+        .on("change", function () {
             const selectedIndex = this.selectedIndex;
             if (selectedIndex > 0) {
                 const segment = preselectedSegments[selectedIndex - 1];
-                brushGroup.call(brush.move, [segment.start, segment.end].map(xScale));
-                updateStats(segment.start, segment.end);
+                const [start, end] = [segment.start, segment.end];
+
+                xScale.domain([start, end]);
+                const slicedData = raw.slice(start, end);
+
+                svg.select(".x-axis")
+                    .transition().duration(500)
+                    .call(xAxis.scale(xScale));
+
+                svg.select(".temp-line")
+                    .datum(slicedData)
+                    .transition().duration(500)
+                    .attr("d", line);
+
+                svg.selectAll("circle").remove();
+                svg.selectAll("circle")
+                    .data(slicedData.map((d, i) => ({ val: d, idx: i + start })))
+                    .enter()
+                    .append("circle")
+                    .attr("cx", d => xScale(d.idx))
+                    .attr("cy", d => yScale(d.val))
+                    .attr("r", 4)
+                    .attr("fill", "red")
+                    .attr("opacity", 0.7)
+                    .on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition().duration(200)
+                            .attr("r", 6)
+                            .attr("opacity", 1);
+                        tooltip.transition().duration(200).style("opacity", 1);
+                        tooltip.html(`Value: ${d.val.toFixed(2)}`);
+                    })
+                    .on("mousemove", function (event) {
+                        tooltip.style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 20) + "px");
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this).transition().duration(200)
+                            .attr("r", 4).attr("opacity", 0.7);
+                        tooltip.transition().duration(200).style("opacity", 0);
+                    });
+
+                updateStats(start, end);
+            } else {
+                resetZoom();
             }
         });
 
-    dropdown.append("option")
-        .text("Select a period")
-        .attr("value", "");
+    dropdown.append("option").text("Select a period").attr("value", "");
 
     preselectedSegments.forEach((segment, i) => {
         const day = Math.floor(segment.start / 1440) + 1;
@@ -155,6 +197,42 @@ export async function renderTemperaturePlot(path) {
         d3.select("#preset-brush").node().selectedIndex = 0;
     }
 
+    function resetZoom() {
+        xScale.domain([0, raw.length - 1]);
+
+        svg.select(".x-axis")
+            .transition().duration(500)
+            .call(xAxis.scale(xScale));
+
+        svg.select(".temp-line")
+            .datum(raw)
+            .transition().duration(500)
+            .attr("d", line);
+
+        svg.selectAll("circle").remove();
+        svg.selectAll("circle")
+            .data(raw.filter((_, i) => i % 100 === 0).map((d, i) => ({ val: d, idx: i * 100 })))
+            .enter()
+            .append("circle")
+            .attr("cx", d => xScale(d.idx))
+            .attr("cy", d => yScale(d.val))
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("opacity", 0.7)
+            .on("mouseover", function (event, d) {
+                d3.select(this).transition().duration(200).attr("r", 6).attr("opacity", 1);
+                tooltip.transition().duration(200).style("opacity", 1);
+                tooltip.html(`Value: ${d.val.toFixed(2)}`);
+            })
+            .on("mousemove", function (event) {
+                tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", function () {
+                d3.select(this).transition().duration(200).attr("r", 4).attr("opacity", 0.7);
+                tooltip.transition().duration(200).style("opacity", 0);
+            });
+    }
+
     d3.select("style").text(`
         #preset-brush {
             margin: 10px;
@@ -163,40 +241,27 @@ export async function renderTemperaturePlot(path) {
         }
     `);
 
-    // === ✨ Tooltip Logic Added Below ===
     const tooltip = d3.select("#tooltip");
 
     svg.selectAll("circle")
-        .data(raw.filter((_, i) => i % 100 === 0))
+        .data(raw.filter((_, i) => i % 100 === 0).map((d, i) => ({ val: d, idx: i * 100 })))
         .enter()
         .append("circle")
-        .attr("cx", (d, i) => xScale(i * 100))
-        .attr("cy", d => yScale(d))
+        .attr("cx", d => xScale(d.idx))
+        .attr("cy", d => yScale(d.val))
         .attr("r", 4)
         .attr("fill", "red")
         .attr("opacity", 0.7)
-        .on("mouseover", function(event, d) {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("r", 6)
-                .attr("opacity", 1);
+        .on("mouseover", function (event, d) {
+            d3.select(this).transition().duration(200).attr("r", 6).attr("opacity", 1);
             tooltip.transition().duration(200).style("opacity", 1);
-            tooltip.html(`Value: ${d.toFixed(2)}`);
+            tooltip.html(`Value: ${d.val.toFixed(2)}`);
         })
-        .on("mousemove", function(event) {
-            tooltip
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 20) + "px");
+        .on("mousemove", function (event) {
+            tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 20) + "px");
         })
-        .on("mouseout", function() {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("r", 4)
-                .attr("opacity", 0.7);
+        .on("mouseout", function () {
+            d3.select(this).transition().duration(200).attr("r", 4).attr("opacity", 0.7);
             tooltip.transition().duration(200).style("opacity", 0);
         });
-
-    // === TODO: Add other enhancements ===
 }
